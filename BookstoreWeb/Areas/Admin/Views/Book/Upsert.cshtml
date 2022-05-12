@@ -1,0 +1,100 @@
+﻿@model Bookstore.Models.ViewModel.BookVM
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <input asp-for="Book.Id" hidden />
+    <input asp-for="Book.ImageUrl" hidden />
+
+    <div class="row">
+        <div class="col-10">
+            <div class="border p-3 mt=4 row">
+        <div class="col-12 pb-2">
+            <h2 class="text-primary">@(Model.Book.Id!=0?"Update" : "Create") Book</h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All"></div>
+        <div class="mb-3">
+            <label asp-for="Book.Title"></label>
+            <input asp-for="Book.Title" class="form-control"/>
+            <span asp-validation-for="Book.Title" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Book.Author"></label>
+            <input asp-for="Book.Author" class="form-control"/>
+            <span asp-validation-for="Book.Author" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Book.ISBN"></label>
+            <input asp-for="Book.ISBN" class="form-control"/>
+            <span asp-validation-for="Book.ISBN" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Book.Price"></label>
+            <input asp-for="Book.Price" class="form-control"/>
+            <span asp-validation-for="Book.Price" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Book.Price100"></label>
+            <input asp-for="Book.Price100" class="form-control"/>
+            <span asp-validation-for="Book.Price100" class="text-danger"></span>
+        </div>
+         <div class="mb-3 col-6">
+            <label asp-for="Book.Price200"></label>
+            <input asp-for="Book.Price200" class="form-control"/>
+            <span asp-validation-for="Book.Price200" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Book.ImageUrl"></label>
+            <input type="file" id="uploadBox" name="file" class="form-control"/>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Book.CategoryId"></label>
+            <select asp-for="Book.CategoryId" asp-items="@Model.CategoryList" class="form-select">
+                <option disabled selected>--Select Category--</option>
+            </select>
+            <span asp-validation-for="Book.CategoryId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Book.CoverId"></label>
+            <select asp-for="Book.CoverId" asp-items="@Model.CoverList" class="form-select">
+                <option disabled selected>--Select Cover--</option>
+            </select>
+            <span asp-validation-for="Book.CoverId" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            @if (Model.Book.Id != 0)
+            {
+                <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+            }
+            else
+            {
+                <button type="submit" onclick="return ValidateInput()" class="btn btn-primary" style="width:150px">Create</button>
+            }
+            <a asp-controller="Book" asp-action="Index" class="btn btn-secondary" style="width:150px">Back to List</a>
+        </div>
+    </div>
+        </div>
+        <div class="col-2 pt-4">
+            <img src="@Model.Book.ImageUrl" width="100" style="border-radius:5px; border:1px solid" />
+        </div>
+    </div>
+    
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script>
+        function ValidateInput(){
+            if(document.getElementById("uploadBox").value==""){
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Image Required!',
+                })
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
